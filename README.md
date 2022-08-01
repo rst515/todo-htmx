@@ -1,6 +1,6 @@
-# An HTMX project
-Based on https://htmx-django.herokuapp.com/blog/project-1-to-do-app
-...
+# An HTMX single page app project
+To demonstrate the use of the [HTMX] (https://htmx.org/) (a dependency-free, browser-oriented javascript library) to create single page apps. The project is based on the https://htmx-django.herokuapp.com/blog/project-1-to-do-app tutorial.
+
 
 ## A Minimalistic Modern Django Boilerplate
 
