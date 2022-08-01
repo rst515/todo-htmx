@@ -1,10 +1,14 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from allauth.account.forms import SignupForm
 from .models import Task
 from .forms import TaskForm
+from django.views.decorators.http import require_POST 
 
 # Create your views here.
+
+def auth(request):
+    return render(request, "components/auth.html")
+
 def home(request):
     # if we have a GET request
     if request.method == "GET":
@@ -31,11 +35,9 @@ def home(request):
 
             return render(
                 request,
-                "components/tasks.html",
+                "components/task_list.html",
                 {
-                    "form": TaskForm(),
-                    "tasks": tasks,
-                    "errors": None,
+                   "tasks": tasks,
                 },  # a new empty form, since we saved the posted one
             )
 
@@ -46,14 +48,39 @@ def home(request):
             # we would return only our tasks components with the old tasks, and the errors
             return render(
                 request,
-                "components/tasks.html",
+                "components/task_list.html",
                 {
-                    "form": form,
                     "tasks": tasks,
                     "errors": errors,
                 },  # the posted form, since it didn't save
             )
 
-def auth(request):
-    return render(request, "components/auth.html")
+@require_POST
+def complete(request, task_id):
+    task = Task.objects.get(id=task_id)
+    if task.done == True:
+        task.done = False
+    else:
+        task.done = True
+    task.save()
+    tasks = Task.objects.filter(user=request.user)
+    # our tasks components needs a form, tasks, and errors to render
+    return render(
+        request,
+        "components/task_list.html",
+        {
+            "tasks": tasks,
+        },
+    )
 
+@require_POST
+def delete(request, task_id):
+    Task.objects.filter(id=task_id).delete()
+    tasks = Task.objects.filter(user=request.user)
+    return render(
+        request,
+        "components/task_list.html",
+        {
+            "tasks": tasks,
+        },
+    )

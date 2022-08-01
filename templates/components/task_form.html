@@ -1,0 +1,10 @@
+{% load crispy_forms_tags %}
+
+<form 
+hx-post="{% url 'home' %}"
+hx-target="#tasks" 
+hx-swap="outerHTML"
+>
+    {{ form|crispy }}
+    <button type="submit"> Add </button>
+</form>

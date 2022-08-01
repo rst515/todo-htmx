@@ -1,24 +1,6 @@
 {% load crispy_forms_tags %} 
 
-<div class="card w-600 mw-full mx-auto" id="tasks">
-    <h3 class="card-title"> Your tasks </h3>
-    
-    <ul> 
-    {% for task in tasks %}
-        <li> {{task}} </li>
-    {% empty %}
-        <li> No items on your list yet! </li>
-    {% endfor %}
-    </ul>
-
-    {% if errors %} {{errors}} {% endif %}
-
-    <form
-    hx-post="{% url 'home' %}"
-    hx-swap="outerHTML"
-    hx-target="#tasks"
-    ><!-- no hx-trigger on a form means it will be submit by default -->
-        {{ form }}
-        <button type="submit"> Add </button>
-    </form>
+<div class="card w-600 mw-full mx-auto">
+    {% include 'components/task_list.html' %}
+    {% include 'components/task_form.html' %}
 </div>
